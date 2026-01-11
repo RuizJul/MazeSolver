@@ -11,51 +11,46 @@ import java.util.List;
  *
  * @author Julian
  */
+
 public class Node {
 
-    // Estado del problema (posición en el laberinto)
-    int x, y;
+    // ---- Estado del sistema ----
+    private int x;
+    private int y;
+    private int health;
+    private boolean alive;
 
-    // Propiedades del árbol
-    int depth;
-    int value;
-    Node parent;
-    List<Node> children;
+    // ---- Propiedades del árbol ----
+    private int depth;
+    private int value; // para minimax después
+    private Node parent;
+    private List<Node> children;
 
-    public Node(int x, int y, int depth, Node parent) {
+    public Node(int x, int y, int health, int depth, Node parent) {
         this.x = x;
         this.y = y;
+        this.health = health;
+        this.alive = health > 0;
         this.depth = depth;
         this.parent = parent;
         this.value = 0;
         this.children = new ArrayList<>();
     }
+
     // ---------- Getters ----------
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public int getHealth() { return health; }
+    public int getDepth() { return depth; }
+    public int getValue() { return value; }
+    public Node getParent() { return parent; }
+    public List<Node> getChildren() { return children; }
 
-    public int getX() {
-        return x;
+    public boolean isAlive() {
+        return alive;
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public int getDepth() {
-        return depth;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public Node getParent() {
-        return parent;
-    }
-
-    public List<Node> getChildren() {
-        return children;
-    }
-
+    // ---------- Setters ----------
     public void setValue(int value) {
         this.value = value;
     }
