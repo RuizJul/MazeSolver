@@ -3,82 +3,73 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package mazesolver;
-import Model.*;
-import MiniMax.*;
-import solver.DFS;
-import solver.BFS;
-
-import java.util.List;
-
 /**
  *
  * @author Julian
  */
 
+import Model.*;
+import solver.*;
+import BranchAndBound.BranchAndBoundSolver;
+
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        // 1️⃣ Definir el laberinto
-        char[][] grid = {
-            {'#','#','#','#','#','#','#','#'},
-            {'#','S','.','T','.','.','.','#'},
-            {'#','.','#','.','#','T','.','#'},
-            {'#','.','#','.','.','.','.','#'},
-            {'#','T','.','#','.','T','G','#'},
-            {'#','.','.','.','.','.','.','#'},
-            {'#','#','#','#','#','#','#','#'}
+        int[][] grid = {
+                { 0,  0,  0, -1,  0 },
+                { -1, -1, 0, -1,  0 },
+                { 0, 10, 0,  0,  0 }, // trampa mortal
+                { 0, -1, -1, -1,  0 },
+                { 0,  0,  0,  0,  0 }
         };
 
         Maze maze = new Maze(grid);
+        Node start = new Node(0, 0, 0, 5, null); // poca vida
 
-        // 2️⃣ Estado inicial
-        int startX = 1;
-        int startY = 1;
-        int initialHealth = 100;
+        int goalX = 4;
+        int goalY = 4;
 
-        Node root = new Node(startX, startY, initialHealth, 0, null);
+        System.out.println("===== BFS =====");
+        BFS bfs = new BFS(maze);
+        Node bfsSolution = bfs.solve(start, goalX, goalY);
+        printPath(bfs.getPath(bfsSolution));
 
-        // 3️⃣ Construir árbol de estados
-        int maxDepth = 15;
-        TreeBuilder builder = new TreeBuilder(maze, maxDepth);
-        builder.buildTree(root);
+        System.out.println("\n===== DFS =====");
+        DFS dfs = new DFS(maze, goalX, goalY);
+        Node dfsSolution = dfs.solve(start);
+        printPath(dfs.getPath(dfsSolution));
 
-        // ================= DFS =================
-        System.out.println("===== DFS SOLUTION =====");
-        DFS dfs = new DFS(maze);
-        Node dfsGoal = dfs.solve(root);
+        System.out.println("\n===== Branch and Bound =====");
+        BranchAndBoundSolver bb =
+                new BranchAndBoundSolver(maze, goalX, goalY);
+        Node bbSolution = bb.solve(start);
+        printPath(bbSolution);
+    }
 
-        if (dfsGoal != null) {
-            List<Node> dfsPath = dfs.getPath(dfsGoal);
-            printPath(dfsPath);
-        } else {
-            System.out.println("No solution found with DFS");
+    private static void printPath(List<Node> path) {
+        if (path == null || path.isEmpty()) {
+            System.out.println("No hay solución");
+            return;
         }
 
-        // ================= BFS =================
-        System.out.println("\n===== BFS SOLUTION =====");
-        BFS bfs = new BFS(maze);
-        Node bfsGoal = bfs.solve(root);
-
-        if (bfsGoal != null) {
-            List<Node> bfsPath = bfs.getPath(bfsGoal);
-            printPath(bfsPath);
-        } else {
-            System.out.println("No solution found with BFS");
+        for (Node n : path) {
+            System.out.println("(" + n.x + "," + n.y + ") vida=" + n.life);
         }
     }
 
-    // Método auxiliar para imprimir un camino
-    private static void printPath(List<Node> path) {
-        System.out.println("Path length: " + (path.size() - 1));
-        for (Node n : path) {
-            System.out.println(
-                "(x=" + n.getX() +
-                ", y=" + n.getY() +
-                ", hp=" + n.getHealth() + ")"
-            );
+    private static void printPath(Node node) {
+        if (node == null) {
+            System.out.println("No hay solución");
+            return;
         }
+
+        if (node.parent != null) {
+            printPath(node.parent);
+        }
+
+        System.out.println("(" + node.x + "," + node.y + ") vida=" + node.life);
     }
 }
