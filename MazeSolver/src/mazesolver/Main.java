@@ -14,62 +14,87 @@ import BranchAndBound.BranchAndBoundSolver;
 
 import java.util.List;
 
-public class Main {
+//public class Main {
+
+//    public static void main(String[] args) {
+//
+//        int[][] grid = {
+//                { 0,  0,  0, -1,  0 },
+//                { -1, -1, 0, -1,  0 },
+//                { 0, 10, 0,  0,  0 }, // trampa mortal
+//                { 0, -1, -1, -1,  0 },
+//                { 0,  0,  0,  0,  0 }
+//        };
+//
+//        Maze maze = new Maze(grid);
+//        Node start = new Node(0, 0, 0, 5, null); // poca vida
+//
+//        int goalX = 4;
+//        int goalY = 4;
+//
+//        System.out.println("===== BFS =====");
+//        BFS bfs = new BFS(maze);
+//        Node bfsSolution = bfs.solve(start, goalX, goalY);
+//        printPath(bfs.getPath(bfsSolution));
+//
+//        System.out.println("\n===== DFS =====");
+//        DFS dfs = new DFS(maze, goalX, goalY);
+//        Node dfsSolution = dfs.solve(start);
+//        printPath(dfs.getPath(dfsSolution));
+//
+//        System.out.println("\n===== Branch and Bound =====");
+//        BranchAndBoundSolver bb =
+//                new BranchAndBoundSolver(maze, goalX, goalY);
+//        Node bbSolution = bb.solve(start);
+//        printPath(bbSolution);
+//        
+//    }
+//
+//    private static void printPath(List<Node> path) {
+//        if (path == null || path.isEmpty()) {
+//            System.out.println("No hay solución");
+//            return;
+//        }
+//
+//        for (Node n : path) {
+//            System.out.println("(" + n.x + "," + n.y + ") vida=" + n.life);
+//        }
+//    }
+//
+//    private static void printPath(Node node) {
+//        if (node == null) {
+//            System.out.println("No hay solución");
+//            return;
+//        }
+//
+//        if (node.parent != null) {
+//            printPath(node.parent);
+//        }
+//
+//        System.out.println("(" + node.x + "," + node.y + ") vida=" + node.life);
+//    }
+//}
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/Views/MazeEditor.fxml")
+        );
+
+        Scene scene = new Scene(loader.load());
+        stage.setTitle("Maze Editor");
+        stage.setScene(scene);
+        stage.show();
+    }
 
     public static void main(String[] args) {
-
-        int[][] grid = {
-                { 0,  0,  0, -1,  0 },
-                { -1, -1, 0, -1,  0 },
-                { 0, 10, 0,  0,  0 }, // trampa mortal
-                { 0, -1, -1, -1,  0 },
-                { 0,  0,  0,  0,  0 }
-        };
-
-        Maze maze = new Maze(grid);
-        Node start = new Node(0, 0, 0, 5, null); // poca vida
-
-        int goalX = 4;
-        int goalY = 4;
-
-        System.out.println("===== BFS =====");
-        BFS bfs = new BFS(maze);
-        Node bfsSolution = bfs.solve(start, goalX, goalY);
-        printPath(bfs.getPath(bfsSolution));
-
-        System.out.println("\n===== DFS =====");
-        DFS dfs = new DFS(maze, goalX, goalY);
-        Node dfsSolution = dfs.solve(start);
-        printPath(dfs.getPath(dfsSolution));
-
-        System.out.println("\n===== Branch and Bound =====");
-        BranchAndBoundSolver bb =
-                new BranchAndBoundSolver(maze, goalX, goalY);
-        Node bbSolution = bb.solve(start);
-        printPath(bbSolution);
-    }
-
-    private static void printPath(List<Node> path) {
-        if (path == null || path.isEmpty()) {
-            System.out.println("No hay solución");
-            return;
-        }
-
-        for (Node n : path) {
-            System.out.println("(" + n.x + "," + n.y + ") vida=" + n.life);
-        }
-    }
-
-    private static void printPath(Node node) {
-        if (node == null) {
-            System.out.println("No hay solución");
-            return;
-        }
-
-        if (node.parent != null) {
-            printPath(node.parent);
-        }
-
-        System.out.println("(" + node.x + "," + node.y + ") vida=" + node.life);
+        launch();
     }
 }
