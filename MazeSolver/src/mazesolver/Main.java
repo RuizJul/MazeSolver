@@ -3,19 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package mazesolver;
+
 /**
  *
  * @author Julian
  */
-
 import Model.*;
 import solver.*;
-import BranchAndBound.BranchAndBoundSolver;
+import solver.BranchAndBoundSolver;
 
 import java.util.List;
 
 //public class Main {
-
 //    public static void main(String[] args) {
 //
 //        int[][] grid = {
@@ -74,9 +73,34 @@ import java.util.List;
 //        System.out.println("(" + node.x + "," + node.y + ") vida=" + node.life);
 //    }
 //}
-
+//import javafx.application.Application;
+//import javafx.fxml.FXMLLoader;
+//import javafx.scene.Scene;
+//import javafx.stage.Stage;
+//
+//public class Main extends Application {
+//    @Override
+//    public void start(Stage stage) throws Exception {
+//        FXMLLoader loader = new FXMLLoader(
+//                getClass().getResource("/Views/MazeEditor.fxml")
+//        );
+//
+//        Scene scene = new Scene(loader.load());
+//        stage.setTitle("Maze Editor");
+//        stage.setScene(scene);
+//        stage.show();
+//    }
+//
+//    public static void main(String[] args) {
+//        launch();
+//    }
+//}
+import Controllers.SelectorController;
+import Logic.CircularMazeList;
+import Logic.MazeLoader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -84,17 +108,18 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/Views/MazeEditor.fxml")
-        );
 
-        Scene scene = new Scene(loader.load());
-        stage.setTitle("Maze Editor");
+        Parent root = FXMLLoader.load(getClass().getResource("/Views/Menu.fxml"));
+
+        Scene scene = new Scene(root, 600, 500);
+
         stage.setScene(scene);
+        stage.setTitle("Maze Solver");
+        stage.setResizable(false); // 🔒 opcional pero recomendado
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }

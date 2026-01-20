@@ -1,4 +1,4 @@
-package BranchAndBound;
+package solver;
 
 import Model.Maze;
 import Model.Node;

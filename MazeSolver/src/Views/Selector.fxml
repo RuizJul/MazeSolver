@@ -1,1 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane prefHeight="500" prefWidth="600"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controllers.SelectorController">
+
+    <children>
+
+        <!-- GRID DEL LABERINTO -->
+        <GridPane fx:id="mazeGrid"
+                  layoutX="50"
+                  layoutY="50"
+                  prefWidth="500"
+                  prefHeight="400"/>
+
+        <!-- BOTONES -->
+        <Button text="⟵"
+                layoutX="50"
+                layoutY="460"
+                prefWidth="80"
+                onAction="#prevMaze"/>
+
+        <Button text="JUGAR"
+                layoutX="250"
+                layoutY="460"
+                prefWidth="100"
+                onAction="#playMaze"/>
+
+        <Button text="⟶"
+                layoutX="470"
+                layoutY="460"
+                prefWidth="80"
+                onAction="#nextMaze"/>
+
+    </children>
+</Pane>

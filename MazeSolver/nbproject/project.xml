@@ -5,7 +5,8 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>MazeSolver</name>
             <source-roots>
-                <root id="src.MazeSolver.dir"/>
+                <root id="src.resources.dir"/>
+                <root id="src.src.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

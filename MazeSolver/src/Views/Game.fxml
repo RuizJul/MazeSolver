@@ -1,1 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane prefHeight="500" prefWidth="600"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controllers.GameController">
+
+    <children>
+
+        <!-- Laberinto -->
+        <GridPane fx:id="gameGrid"
+                  layoutX="50"
+                  layoutY="50"
+                  prefHeight="400"
+                  prefWidth="400"
+                  focusTraversable="true"/>
+
+        <!-- Botones -->
+        <Button fx:id="solveButton"
+                layoutX="470"
+                layoutY="120"
+                prefWidth="100"
+                text="Resolver"/>
+
+        <Button fx:id="backButton"
+                layoutX="470"
+                layoutY="180"
+                prefWidth="100"
+                text="Volver"/>
+
+    </children>
+</Pane>

@@ -4,47 +4,110 @@
  */
 package Controllers;
 
+import Logic.CircularMazeList;
+import Logic.MazeData;
+import Logic.MazeLoader;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
 /**
  *
  * @author Julian
  */
-import Logic.CircularMazeList;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-
 public class SelectorController {
 
     @FXML
-    private Label mazeNameLabel;
+    private GridPane mazeGrid;
 
-    @FXML
-    private GridPane previewGrid;
+    private static final int CELL_SIZE = 40;
 
-    private CircularMazeList mazeList;
+    private CircularMazeList mazes;
 
     @FXML
     public void initialize() {
-        mazeList = MazeLoader.loadMazes(); // los cargamos de archivos
-        showCurrentMaze();
+        mazes = MazeLoader.loadMazes();
+
+        if (mazes.isEmpty()) {
+            System.out.println("⚠ No hay laberintos cargados");
+            return;
+        }
+
+        drawMaze(mazes.getCurrent());
+    }
+
+    private void drawMaze(MazeData maze) {
+        mazeGrid.getChildren().clear();
+
+        int[][] m = maze.getMatrix();
+
+        for (int row = 0; row < m.length; row++) {
+            for (int col = 0; col < m[row].length; col++) {
+
+                Pane cell = new Pane();
+                cell.setPrefSize(CELL_SIZE, CELL_SIZE);
+
+                paintCell(cell, m[row][col]);
+
+                mazeGrid.add(cell, col, row);
+            }
+        }
+    }
+
+    private void paintCell(Pane cell, int value) {
+        switch (value) {
+            case -1: // WALL
+                cell.setStyle("-fx-border-color: black; -fx-background-color: gray;");
+                break;
+            case 0: // EMPTY
+                cell.setStyle("-fx-border-color: black; -fx-background-color: white;");
+                break;
+            case 1: // START
+                cell.setStyle("-fx-border-color: black; -fx-background-color: lightgreen;");
+                break;
+            case 2: // GOAL
+                cell.setStyle("-fx-border-color: black; -fx-background-color: tomato;");
+                break;
+            case 3: // TRAP
+                cell.setStyle("-fx-border-color: black; -fx-background-color: orange;");
+                break;
+            default:
+                cell.setStyle("-fx-border-color: black; -fx-background-color: black;");
+        }
+    }
+
+    // 🔽 BOTONES 🔽
+    @FXML
+    private void nextMaze() {
+        drawMaze(mazes.next());
     }
 
     @FXML
-    private void handleNext() {
-        mazeList.next();
-        showCurrentMaze();
+    private void prevMaze() {
+        drawMaze(mazes.prev());
     }
 
     @FXML
-    private void handlePrev() {
-        mazeList.prev();
-        showCurrentMaze();
-    }
+    private void playMaze() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/Views/Game.fxml")
+            );
 
-    @FXML
-    private void handlePlay() {
-        MazeData selected = mazeList.getCurrent();
-        GameState.setMaze(selected);
-        goToGameView();
+            Parent root = loader.load();
+
+            GameController controller = loader.getController();
+
+            controller.setMaze(mazes.getCurrent());
+
+            Stage stage = (Stage) mazeGrid.getScene().getWindow();
+            stage.getScene().setRoot(root);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import util.MazeStorage;
 
 /**
  *
@@ -201,27 +202,26 @@ public class MazeEditorController {
         alert.setHeaderText(null);
         alert.setContentText("Laberinto guardado correctamente");
         alert.showAndWait();
-        
+
         goBackToMenu();
     }
 
     private void saveMazeToFile(int[][] maze) {
-        try {
-            File dir = new File("mazes");
-            if (!dir.exists()) {
-                dir.mkdir();
-            }
 
-            File file = new File(dir, "maze_" + System.currentTimeMillis() + ".txt");
+        File dir = MazeStorage.getMazeDirectory();
 
-            try (PrintWriter writer = new PrintWriter(file)) {
-                for (int[] row : maze) {
-                    for (int cell : row) {
-                        writer.print(cell + " ");
-                    }
-                    writer.println();
+        String fileName = "maze_" + System.currentTimeMillis() + ".txt";
+        File file = new File(dir, fileName);
+
+        try (PrintWriter writer = new PrintWriter(file)) {
+
+            for (int i = 0; i < maze.length; i++) {
+                for (int j = 0; j < maze[i].length; j++) {
+                    writer.print(maze[i][j] + " ");
                 }
+                writer.println();
             }
+
         } catch (Exception e) {
             showError("Error al guardar el laberinto");
         }

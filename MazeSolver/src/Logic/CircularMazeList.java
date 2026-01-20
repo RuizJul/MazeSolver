@@ -51,4 +51,18 @@ public class CircularMazeList {
     public boolean isEmpty() {
         return current == null;
     }
+
+    public int size() {
+        if (current == null) {
+            return 0;
+        }
+
+        int count = 1;
+        MazeNode temp = current.next;
+        while (temp != current) {
+            count++;
+            temp = temp.next;
+        }
+        return count;
+    }
 }
