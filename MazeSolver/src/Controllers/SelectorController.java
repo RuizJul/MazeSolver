@@ -14,6 +14,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import javafx.application.Platform;
+import javafx.scene.input.KeyCode;
 /**
  *
  * @author Julian
@@ -37,6 +39,16 @@ public class SelectorController {
         }
 
         drawMaze(mazes.getCurrent());
+        
+        Platform.runLater(this::enableEsc);
+    }
+
+    private void enableEsc() {
+        mazeGrid.getScene().setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                changeView("Menu.fxml");
+            }
+        });
     }
 
     private void drawMaze(MazeData maze) {
@@ -102,6 +114,22 @@ public class SelectorController {
             GameController controller = loader.getController();
 
             controller.setMaze(mazes.getCurrent());
+            System.out.println(mazeGrid);
+
+            Stage stage = (Stage) mazeGrid.getScene().getWindow();
+            stage.getScene().setRoot(root);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void changeView(String fxml) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/Views/" + fxml)
+            );
+            Parent root = loader.load();
 
             Stage stage = (Stage) mazeGrid.getScene().getWindow();
             stage.getScene().setRoot(root);

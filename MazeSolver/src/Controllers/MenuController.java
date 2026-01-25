@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -23,17 +24,22 @@ public class MenuController {
     public Button playButton;
 
     private void changeView(String fxml) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/" + fxml));
-            Parent root = loader.load();
+    try {
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/Views/" + fxml)
+        );
+        Parent root = loader.load();
 
-            Stage stage = (Stage) creatorButton.getScene().getWindow();
-            stage.getScene().setRoot(root);
+        Stage stage = (Stage) creatorButton.getScene().getWindow();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
 
     @FXML
     public void goToCreator(ActionEvent event) {

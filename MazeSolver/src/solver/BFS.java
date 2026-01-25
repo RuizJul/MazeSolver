@@ -42,6 +42,12 @@ public class BFS {
                 if (maze.isWall(nx, ny)) continue;
 
                 int cellCost = maze.cellCost(nx, ny);
+                
+                // la salida no consume vida
+                if (nx == goalX && ny == goalY) {
+                    cellCost = 0;
+                }
+                
                 int newLife = current.life - cellCost; // SE CALCULA...
                 int newCost = current.cost + 1;
 

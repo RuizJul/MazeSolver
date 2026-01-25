@@ -18,6 +18,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import util.MazeStorage;
 
+import javafx.application.Platform;
+import javafx.scene.input.KeyCode;
 /**
  *
  * @author Julian
@@ -36,6 +38,16 @@ public class MazeEditorController {
     public void initialize() {
         mazeMatrix = new CellType[ROWS][COLS];
         buildGrid();
+        
+        Platform.runLater(this::enableEsc);
+    }
+
+    private void enableEsc() {
+        grid.getScene().setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                changeView("Menu.fxml");
+            }
+        });
     }
 
     private void buildGrid() {
@@ -204,6 +216,7 @@ public class MazeEditorController {
         alert.showAndWait();
 
         goBackToMenu();
+        
     }
 
     private void saveMazeToFile(int[][] maze) {
@@ -241,6 +254,22 @@ public class MazeEditorController {
 
         } catch (Exception e) {
             showError("No se pudo volver al menú");
+            e.printStackTrace();
+        }
+    }
+
+
+    private void changeView(String fxml) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/Views/" + fxml)
+            );
+            Parent root = loader.load();
+
+            Stage stage = (Stage) grid.getScene().getWindow();
+            stage.getScene().setRoot(root);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
